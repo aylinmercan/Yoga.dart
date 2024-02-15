@@ -1,6 +1,7 @@
 import 'package:bitirme/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:bitirme/components/setting.dart';
 
 class YogaPage extends StatelessWidget{
   @override
@@ -41,12 +42,28 @@ class YogaPage extends StatelessWidget{
 
             ),
             ListTile(
+              leading: Image.asset('assets/home.png',
+                  width:24,
+                    height: 24,
+              ),
+              title: const Text('Home'),
+              onTap: (){
+                Navigator.push(context,
+                MaterialPageRoute(builder:(context) => YogaPage()),
+                );
+              },
+            ),
+            ListTile(
               leading: Image.asset('assets/settings.png',
               width: 24,
                 height: 24,
               ),
               title: const Text('Settings'),
-              onTap: (){},
+              onTap: (){
+                Navigator.push(context,
+                  MaterialPageRoute(builder:(context) => SettingsPage()),
+                );
+              },
             )
           ],
         ),
