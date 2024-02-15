@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "515904665523",
+    "project_id": "bitirmeprojesi-9de84",
+    "storage_bucket": "bitirmeprojesi-9de84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515904665523:android:84b034c0175ebb3989bdc6",
+        "android_client_info": {
+          "package_name": "com.bitirmeprojesi.bitirme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBItz-v-Mmb3HGDLPxPyJ2oe-4BXxErKsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
