@@ -47,7 +47,9 @@ class LoginScreen extends StatelessWidget {
            ),
            const SizedBox(height:25),
        // username textfield
+
            textfield(
+
              controller: usernameController,
              hintText: 'Email' ,
              obscureText: false,
@@ -60,6 +62,7 @@ class LoginScreen extends StatelessWidget {
              hintText: 'Password',
              obscureText: true,
            ),
+
            const SizedBox(height: 10),
          // forgot password?
            Padding(
@@ -73,8 +76,10 @@ class LoginScreen extends StatelessWidget {
                        return forgotPasswordPage();
                      },
                      ),
+
                      );
                    },
+
              child: Text(
                'Forgot password?',
                style: TextStyle(color: Colors.grey[600]
@@ -91,6 +96,7 @@ class LoginScreen extends StatelessWidget {
 
              onTap: () => AuthService().singIN(email: usernameController.text, password: passwordController.text, context: context),
              text: 'Sign In',
+
            ),
        const SizedBox(height: 50),
        // or continue with

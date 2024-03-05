@@ -5,13 +5,21 @@ import 'package:flutter/material.dart';
     final String hintText;
     final bool obscureText;
 
-    const textfield({
+  /*  const textfield({
       super.key,
       required this.controller,
       required this.hintText,
       required this.obscureText,
 
   });
+   */
+    const textfield({
+      Key? key,
+      required this.controller,
+      required this.hintText,
+      required this.obscureText,
+    }) : super(key: key);
+
 
 
     @override

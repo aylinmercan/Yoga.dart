@@ -1,14 +1,44 @@
 import 'package:bitirme/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bitirme/components/setting.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class YogaPage extends StatelessWidget{
+class YogaPage extends StatefulWidget {
   @override
+  _YogaPageState createState() => _YogaPageState();
+}
+class _YogaPageState extends State<YogaPage> {
+  late String userEmail;
+  bool _isDarkModeEnabled = false;
+  @override
+  void initState() {
+    super.initState();
+    userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
+    _loadDarkModeStatus();
+  }
+  _loadDarkModeStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDarkModeEnabled = prefs.getBool('darkMode') ?? false;
+    });
+  }
+  @override
+  _toggleDarkMode(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isDarkModeEnabled = value;
+    });
+    await prefs.setBool('darkMode', value);
+  }
+
   Widget build(BuildContext context){
-    return Scaffold(
+    return MaterialApp(
+    theme: _isDarkModeEnabled ? ThemeData.dark() : ThemeData.light(),
+      home: Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFFf2e1d8),
+
         title: Text('Yoga',
           style: TextStyle(
             fontSize: 25,
@@ -36,7 +66,7 @@ class YogaPage extends StatelessWidget{
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color:Color(0xFFf2e1d8)
+
               ),
               child: Image(image: AssetImage('assets/lotus.png'))
 
@@ -61,14 +91,14 @@ class YogaPage extends StatelessWidget{
               title: const Text('Settings'),
               onTap: (){
                 Navigator.push(context,
-                  MaterialPageRoute(builder:(context) => SettingsPage()),
+                  MaterialPageRoute(builder:(context) => SettingsPage(emailController: userEmail)),
                 );
               },
             )
           ],
         ),
       ),
-
+      ),
     );
   }
 }
