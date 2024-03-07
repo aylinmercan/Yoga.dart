@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bitirme/components/yoga.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bitirme/components/changePassword.dart';
 
 class SettingsPage extends StatefulWidget {
   static final String path = "lib/companents/setting.dart";
@@ -130,6 +131,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   leading: Icon(Icons.lock_outline,color: Colors.black),
                   trailing: Icon(Icons.keyboard_arrow_right),
                     onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return ChangePassword();
+                    },),
+                    );
                       //changePassword
                     },
                   ),
