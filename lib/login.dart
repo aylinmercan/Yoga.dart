@@ -98,7 +98,7 @@ class LoginScreen extends StatelessWidget {
              text: 'Sign In',
 
            ),
-       const SizedBox(height: 50),
+       const SizedBox(height: 20),
        // or continue with
            Padding(
              padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -126,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                ],
              ),
            ),
-           const SizedBox(height: 50),
+           const SizedBox(height: 28),
            // google + apple sign in buttons
             Row(
              mainAxisAlignment: MainAxisAlignment.center ,

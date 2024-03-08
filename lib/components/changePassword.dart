@@ -4,6 +4,9 @@ import 'package:bitirme/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bitirme/components/forgotPassword.dart';
+import 'package:bitirme/lang/tr.dart';
+import 'package:bitirme/lang/en_US.dart';
+import 'package:bitirme/lang/de_germany.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key});
@@ -19,17 +22,31 @@ class _ChangePasswordState extends State<ChangePassword> {
   final TextEditingController _confirmPasswordController = TextEditingController();
   String? _errorMessage = '';
   late bool _isDarkModeEnabled;
+  late String _selectedLanguage;
+  Map<String, Map<String, String>> _languageMap = {
+    'English': enUS,
+    'Turkish': tur,
+    'German': deGermany,
+  };
 
   @override
   void initState() {
     super.initState();
     _loadDarkModeStatus();
+    _loadSelectedLanguage(); // _selectedLanguage'ı başlat
   }
 
   _loadDarkModeStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _isDarkModeEnabled = prefs.getBool('darkMode') ?? false;
+    });
+  }
+
+  _loadSelectedLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedLanguage = prefs.getString('selectedLanguage') ?? 'English';
     });
   }
 
@@ -53,14 +70,16 @@ class _ChangePasswordState extends State<ChangePassword> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Success'),
-                content: Text('Your Password Has Been Successfully Changed.'),
+                title: Text(
+                    _languageMap[_selectedLanguage]!['successDialogTitle']!
+                ),
+                content: Text(_languageMap[_selectedLanguage]!['successDialogMessage']!),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('OK'),
+                    child: Text(_languageMap[_selectedLanguage]!['OK']!),
                   ),
                 ],
               );
@@ -69,12 +88,11 @@ class _ChangePasswordState extends State<ChangePassword> {
         }
       } catch (error) {
         setState(() {
-          _errorMessage = 'Check Your Password';
+          _errorMessage = _languageMap[_selectedLanguage]!['CheckYourPassword']!;
         });
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -91,7 +109,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 },
               ),
               Text(
-                'Change Password',
+                _languageMap[_selectedLanguage]!['changePasswordTitle']!,
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -119,33 +137,33 @@ class _ChangePasswordState extends State<ChangePassword> {
                 SizedBox(height : 20),
                 TextFormField(
                   controller: _oldPasswordController,
-                  decoration: InputDecoration(labelText: 'Old Password'),
+                  decoration: InputDecoration(labelText: _languageMap[_selectedLanguage]!['oldPasswordLabel']!),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your old password.';
+                      return _languageMap[_selectedLanguage]!['PleaseEnterYourOldPassword']!;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _newPasswordController,
-                  decoration: InputDecoration(labelText: 'New Password'),
+                  decoration: InputDecoration(labelText: _languageMap[_selectedLanguage]!['newPasswordLabel']!),
                   obscureText: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your new password.';
+                      return _languageMap[_selectedLanguage]!['PleaseEnterYourNewPassword']!;
                     }
                     return null;
                   },
                 ),
                 TextFormField(
                   controller: _confirmPasswordController,
-                  decoration: InputDecoration(labelText: 'New Password (repeat)'),
+                  decoration: InputDecoration(labelText: _languageMap[_selectedLanguage]!['confirmPasswordLabel']!),
                   obscureText: true,
                   validator: (value) {
                     if (value != _newPasswordController.text) {
-                      return 'Passwords do not match.';
+                      return _languageMap[_selectedLanguage]!['passwordsDoNotMatchError']!;
                     }
                     return null;
                   },
@@ -158,7 +176,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     }));
                   },
                   child: Text(
-                    'Forgot your password?',
+                    _languageMap[_selectedLanguage]!['forgotPasswordText']!,
                     style: TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
@@ -168,7 +186,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 SizedBox(height: 20.0),
                 mybutton(
                   onTap: _changePassword,
-                  text: 'Change Password',
+                  text: _languageMap[_selectedLanguage]!['changePasswordTitle']!,
                 ),
                 if (_errorMessage != null && _errorMessage!.isNotEmpty)
                   Container(
