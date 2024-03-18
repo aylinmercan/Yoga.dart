@@ -25,8 +25,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   late String _selectedLanguage;
   Map<String, Map<String, String>> _languageMap = {
     'English': enUS,
-    'Turkish': tur,
-    'German': deGermany,
+    'Türkçe': tur,
+    'Detusch': deGermany,
   };
 
   @override

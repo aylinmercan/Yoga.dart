@@ -7,6 +7,9 @@ import 'package:bitirme/components/yoga.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bitirme/components/changePassword.dart';
 import 'package:bitirme/components/changeLanguage.dart';
+import 'package:bitirme/lang/tr.dart';
+import 'package:bitirme/lang/en_US.dart';
+import 'package:bitirme/lang/de_germany.dart';
 
 class SettingsPage extends StatefulWidget {
   static final String path = "lib/companents/setting.dart";
@@ -21,11 +24,27 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   late SharedPreferences _prefs;
   bool _isDarkModeEnabled = false;
+  late String _selectedLanguage;
+
+  Map<String, Map<String, String>> _languageMap = {
+    'English': enUS,
+    'Türkçe': tur,
+    'Detusch': deGermany,
+  };
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _loadDarkModeStatus();
+    _loadSelectedLanguage(); // _selectedLanguage'ı başlat
   }
+
+  _loadSelectedLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedLanguage = prefs.getString('selectedLanguage') ?? 'English';
+    });
+  }
+
   _loadDarkModeStatus() async {
     _prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -45,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Scaffold(
         appBar: AppBar(
 
-            title: Text('Settings',
+            title: Text(_languageMap[_selectedLanguage]!['SettingsLabel']!,
               style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold
@@ -82,7 +101,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   width:24,
                   height: 24,
                 ),
-                title: const Text('Home'),
+                title: Text( _languageMap[_selectedLanguage]!['HomeLabel']!
+                ),
                 onTap: (){
                   Navigator.push(context,
                     MaterialPageRoute(builder:(context) => YogaPage()),
@@ -94,7 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   width: 24,
                   height: 24,
                 ),
-                title: const Text('Settings'),
+                title:  Text(_languageMap[_selectedLanguage]!['SettingsLabel']!),
                 onTap: (){},
               )
             ],
@@ -130,7 +150,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       const SizedBox(height: 0.5),
                       ListTile(
 
-                        title: Text("Change Password", style: TextStyle(fontWeight: FontWeight.w500),),
+                        title: Text(_languageMap[_selectedLanguage]!['changePasswordTitle']!, style: TextStyle(fontWeight: FontWeight.w500),),
                         leading: Icon(Icons.lock_outline,color: Colors.black),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: (){
@@ -143,7 +163,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       const SizedBox(height: 0.5),
                       ListTile(
-                        title: Text("Change Language", style: TextStyle(fontWeight: FontWeight.w500),),
+                        title: Text(_languageMap[_selectedLanguage]!['changeLanguageTitle']!, style: TextStyle(fontWeight: FontWeight.w500),),
                         leading: Icon(Icons.language,color: Colors.black),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
@@ -157,7 +177,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       const SizedBox(height: 0.5),
                       SwitchListTile(
-                        title: Text("Dark Mode"),
+                        title: Text(_languageMap[_selectedLanguage]!['DarkMode']!),
                         value: _isDarkModeEnabled,
                         onChanged: (value){
                           _toggleDarkMode(value);

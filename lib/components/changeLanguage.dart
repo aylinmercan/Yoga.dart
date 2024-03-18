@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bitirme/components/changePassword.dart';
@@ -5,6 +6,7 @@ import 'package:bitirme/lang/tr.dart';
 import 'package:bitirme/lang/en_US.dart';
 import 'package:bitirme/lang/de_germany.dart';
 import 'package:bitirme/login.dart';
+import 'package:bitirme/components/setting.dart';
 
 
 class ChangeLanguagePage extends StatefulWidget {
@@ -16,18 +18,20 @@ class ChangeLanguagePage extends StatefulWidget {
 }
 
 class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
+  late String userEmail;
   late bool _isDarkModeEnabled = false;
   late String _selectedLanguage = 'English';
   Map<String, Map<String, String>> _languageMap = {
     'English': enUS,
-    'Turkish': tur,
-    'German': deGermany,
+    'Türkçe': tur,
+    'Detusch': deGermany,
 
   };
 
   @override
   void initState() {
     super.initState();
+    userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
     _loadSelectedLanguage();
     _loadDarkModeStatus();
   }
@@ -57,56 +61,81 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     return Theme(
       data: _isDarkModeEnabled ? ThemeData.dark() : ThemeData.light(),
       child: Scaffold(
-        appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                    _languageMap[_selectedLanguage]!['changeLanguageTitle']!
-                ),
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  tooltip: 'Logout',
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return LoginScreen();
-                    }));
-                  },
-                ),
-              ],
-            )
-        ),
-        body: Center(
+        body: WillPopScope( //telefonun geri tuşu özelliği
+          onWillPop: () async {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (BuildContext context) => SettingsPage(emailController: userEmail)),
+            );
+            return true;
+          },
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start, // Dikeyde en üstte başlasın
             children: <Widget>[
-              DropdownButton<String>(
-                value: _selectedLanguage,
-                icon: const Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (BuildContext context) => SettingsPage(emailController: userEmail)));
+                      },
+                    ),
+                    Text(
+                      _languageMap[_selectedLanguage]!['changeLanguageTitle']!,
+                      style: TextStyle(
+                        fontSize: 20, // Opsiyonel: Başlık boyutunu ayarlayabilirsiniz
+                        fontWeight: FontWeight.bold, // Opsiyonel: Başlık kalınlığını ayarlayabilirsiniz
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.logout),
+                      tooltip: 'Logout',
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return LoginScreen();
+                        }));
+                      },
+                    ),
+                  ],
                 ),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedLanguage = newValue!;
-                    _saveSelectedLanguage(newValue);
-                  });
-                },
-                items: _languageMap.keys.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              ),
+              SizedBox(height: 220), // İsteğe bağlı: Araya boşluk ekleyebilirsiniz
+              Center(
+                child: DropdownButton<String>(
+                  value: _selectedLanguage,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedLanguage = newValue!;
+                      _saveSelectedLanguage(newValue);
+                    });
+                  },
+                  items: _languageMap.keys.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),

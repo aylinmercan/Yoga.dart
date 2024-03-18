@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:bitirme/components/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bitirme/lang/tr.dart';
+import 'package:bitirme/lang/en_US.dart';
+import 'package:bitirme/lang/de_germany.dart';
 
 class YogaPage extends StatefulWidget {
   @override
@@ -12,11 +15,24 @@ class YogaPage extends StatefulWidget {
 class _YogaPageState extends State<YogaPage> {
   late String userEmail;
   bool _isDarkModeEnabled = false;
+  late String _selectedLanguage;
+  Map<String, Map<String, String>> _languageMap = {
+    'English': enUS,
+    'Türkçe': tur,
+    'Detusch': deGermany,
+  };
   @override
   void initState() {
     super.initState();
     userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
     _loadDarkModeStatus();
+    _loadSelectedLanguage(); // _selectedLanguage'ı başlat
+  }
+  _loadSelectedLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedLanguage = prefs.getString('selectedLanguage') ?? 'English';
+    });
   }
   _loadDarkModeStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -76,7 +92,7 @@ class _YogaPageState extends State<YogaPage> {
                   width:24,
                     height: 24,
               ),
-              title: const Text('Home'),
+              title: Text(_languageMap[_selectedLanguage]!['HomeLabel']!),
               onTap: (){
                 Navigator.push(context,
                 MaterialPageRoute(builder:(context) => YogaPage()),
@@ -88,7 +104,7 @@ class _YogaPageState extends State<YogaPage> {
               width: 24,
                 height: 24,
               ),
-              title: const Text('Settings'),
+              title:  Text(_languageMap[_selectedLanguage]!['SettingsLabel']!),
               onTap: (){
                 Navigator.push(context,
                   MaterialPageRoute(builder:(context) => SettingsPage(emailController: userEmail)),

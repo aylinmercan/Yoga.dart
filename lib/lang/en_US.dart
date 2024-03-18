@@ -12,5 +12,15 @@ Map<String, String> enUS = {
   'PleaseEnterYourNewPassword' : 'Please enter your new password.',
   'PleaseEnterOldNewPassword' : 'Please enter your old password.',
   'CheckYourPassword' : 'Check your password.',
-  'OK' : 'OK'
+  'OK' : 'OK',
+  'DarkMode' : 'Dark Mode',
+  'SettingsLabel' : 'Settings',
+  'HomeLabel' : 'Home',
+  'Welcome': 'Welcome!',
+  'Username': 'Username',
+  'Email': 'E-mail',
+  'TelNo': 'Tel-No',
+  'Password': 'Password',
+  'PasswordConfirmText': 'Password Confirm',
+  'SignUp': 'Sign Up',
 };

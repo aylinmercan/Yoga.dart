@@ -13,4 +13,15 @@ Map<String, String> deGermany = {
   'PleaseEnterYourNewPassword' : 'Bitte geben Sie Ihr altes Passwort ein.',
   'CheckYourPassword' : 'Überprüfen Sie Ihr Passwort',
   'OK' : 'Okay',
+  'DarkMode' : 'Dunkelmodus',
+  'SettingsLabel' : 'Einstellungen',
+  'HomeLabel' : 'Heim',
+  'Welcome': 'Willkommen!',
+  'Username': 'Benutzername',
+  'Email': 'E-Mail',
+  'TelNo': 'Telefonnummer',
+  'Password': 'Passwort',
+  'PasswordConfirmText': 'Passwort Bestätigen',
+  'SignUp': 'Registrieren',
+
 };
