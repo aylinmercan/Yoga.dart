@@ -78,6 +78,17 @@ flutter:
     - assets/settings.png
     - assets/home.png
     - assets/account.png
+    - assets/startyoga5.jpg
+    - assets/startyoga4.jpg
+    - assets/startyoga3.jpg
+    - assets/startyoga1.jpg
+    - assets/startyoga.jpg
+    - assets/yoga6.jpg
+    - assets/yoga7.jpg
+    - assets/yoga8.jpeg
+    - assets/yoga9.jpg
+    - assets/movenet_thunder.tflite
+    - assets/classes.txt
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

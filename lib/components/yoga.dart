@@ -1,3 +1,4 @@
+import 'package:bitirme/components/squaretile.dart';
 import 'package:bitirme/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +23,21 @@ class _YogaPageState extends State<YogaPage> {
     'Detusch': deGermany,
   };
   @override
+  @override
+  @override
   void initState() {
     super.initState();
-    userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
-    _loadDarkModeStatus();
-    _loadSelectedLanguage(); // _selectedLanguage'ı başlat
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadDarkModeStatus();
+      _loadSelectedLanguage(); // _selectedLanguage'ı başlat
+      _loadUserEmail();
+    });
+  }
+  Future <void> _loadUserEmail() async{
+    final user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      userEmail = user?.email ?? '';
+    });
   }
   _loadSelectedLanguage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -114,6 +125,22 @@ class _YogaPageState extends State<YogaPage> {
           ],
         ),
       ),
+        body: GestureDetector( // tıklama özelliği için
+          onTap: (){
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => YogaPage()),
+                );
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 0), // sağ ve sol taraftan boşluk bırakmak için
+            alignment: Alignment.topCenter,
+            child: Image.asset('assets/yoga8.jpeg',
+            width: 400,
+              height: 400,
+              fit: BoxFit.cover, // resmi boyutlandırırken oranlarını korumak için
+            ),
+          ),
+        )
       ),
     );
   }
