@@ -163,7 +163,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       const SizedBox(height: 0.5),
                       ListTile(
-                        title: Text(_languageMap[_selectedLanguage]!['changeLanguageTitle']!, style: TextStyle(fontWeight: FontWeight.w500),),
+                        title: Text(_languageMap[_selectedLanguage]!['changeLanguageTitle']!,
+                          style: TextStyle(fontWeight: FontWeight.w500),),
                         leading: Icon(Icons.language,color: Colors.black),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {

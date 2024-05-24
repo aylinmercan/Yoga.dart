@@ -23,4 +23,5 @@ Map<String, String> tur = {
   'Password': 'Şifre',
   'PasswordConfirmText': 'Şifreyi Onayla',
   'SignUp': 'Kayıt Ol',
+  'StartYoga': 'Yogaya Başla'
 };

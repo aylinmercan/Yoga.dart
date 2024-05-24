@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:bitirme/lang/tr.dart';
 import 'package:bitirme/lang/en_US.dart';
 import 'package:bitirme/lang/de_germany.dart';
+import 'package:bitirme/components/yogapose.dart';
 
 class YogaPage extends StatefulWidget {
   @override
@@ -125,21 +126,32 @@ class _YogaPageState extends State<YogaPage> {
           ],
         ),
       ),
-        body: GestureDetector( // tıklama özelliği için
-          onTap: (){
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => YogaPage()),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListTile(
+              leading: Container(
+                width: 150,
+                height: 150,
+                child: Image.asset('assets/yoga8.jpeg',
+                fit: BoxFit.cover,
+                ),
+              ),
+              title: Text(
+                _languageMap[_selectedLanguage]!['StartYoga']!,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.normal
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => YogaPage()),
                 );
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 0), // sağ ve sol taraftan boşluk bırakmak için
-            alignment: Alignment.topCenter,
-            child: Image.asset('assets/yoga8.jpeg',
-            width: 400,
-              height: 400,
-              fit: BoxFit.cover, // resmi boyutlandırırken oranlarını korumak için
-            ),
-          ),
+              },
+            )
+          ],
         )
       ),
     );

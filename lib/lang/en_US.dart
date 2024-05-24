@@ -23,4 +23,5 @@ Map<String, String> enUS = {
   'Password': 'Password',
   'PasswordConfirmText': 'Password Confirm',
   'SignUp': 'Sign Up',
+  'StartYoga' : 'Start Yoga'
 };

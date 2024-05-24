@@ -23,5 +23,6 @@ Map<String, String> deGermany = {
   'Password': 'Passwort',
   'PasswordConfirmText': 'Passwort Bestätigen',
   'SignUp': 'Registrieren',
+  'StartYoga' : 'Beginne mit Yoga'
 
 };
