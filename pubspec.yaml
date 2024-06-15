@@ -53,6 +53,9 @@ dependencies:
   camera: ^0.10.5+9
   tflite:
     path: C:\Users\busramercan\Desktop\bitirme\flutter_tflite
+  percent_indicator: ^4.2.3
+
+
 
 
 
@@ -100,6 +103,13 @@ flutter:
     - assets/labels.txt
     - assets/txtyoga.txt
     - assets/tflite_modelyoga.tflite
+    - assets/warrior.tflite
+    - assets/tree.tflite
+    - assets/images/yoga1.png
+    - assets/images/profile-image.png
+    - assets/models/posenet_mv1_075_float_from_checkpoints.tflite
+    - assets/models/yoga_classifier.tflite
+    - assets/poses/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

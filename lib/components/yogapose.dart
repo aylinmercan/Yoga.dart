@@ -11,7 +11,7 @@ class _YogaPosePageState extends State<YogaPosePage> {
   late CameraController _controller;
   bool _isCameraInitialized = false;
   late List<CameraDescription> _cameras;
-  late List<dynamic> _recognitions;
+  List<dynamic> _recognitions = [];
 
   @override
   void initState() {
@@ -46,8 +46,7 @@ class _YogaPosePageState extends State<YogaPosePage> {
 
   void _loadModel() async {
     String? res = await Tflite.loadModel(
-      model: 'assets/tflite_modelyoga.tflite',
-      labels: "assets/txtyoga.txt",
+      model: 'assets/tree.tflite',
     );
     print("Model Load Result: $res");
   }
@@ -68,7 +67,7 @@ class _YogaPosePageState extends State<YogaPosePage> {
         asynch: true,
       );
       setState(() {
-        _recognitions = recognitions!;
+        _recognitions = recognitions ?? [];
       });
     }
   }
