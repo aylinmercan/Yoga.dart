@@ -10,6 +10,7 @@ import 'package:bitirme/lang/en_US.dart';
 import 'package:bitirme/lang/de_germany.dart';
 import 'package:bitirme/components/yogapose.dart';
 
+
 class YogaPage extends StatefulWidget {
   @override
   _YogaPageState createState() => _YogaPageState();
@@ -63,98 +64,97 @@ class _YogaPageState extends State<YogaPage> {
 
   Widget build(BuildContext context){
     return MaterialApp(
-    theme: _isDarkModeEnabled ? ThemeData.dark() : ThemeData.light(),
+      theme: _isDarkModeEnabled ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
-      appBar: AppBar(
+          appBar: AppBar(
 
-        title: Text('Yoga',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold
-          ),
-
-        ),
-
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-              tooltip:'Logout',
-              onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return LoginScreen();
-              })
-              );
-              },
-    ),
-  ]
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-
-              ),
-              child: Image(image: AssetImage('assets/lotus.png'))
-
-            ),
-            ListTile(
-              leading: Image.asset('assets/home.png',
-                  width:24,
-                    height: 24,
-              ),
-              title: Text(_languageMap[_selectedLanguage]!['HomeLabel']!),
-              onTap: (){
-                Navigator.push(context,
-                MaterialPageRoute(builder:(context) => YogaPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Image.asset('assets/settings.png',
-              width: 24,
-                height: 24,
-              ),
-              title:  Text(_languageMap[_selectedLanguage]!['SettingsLabel']!),
-              onTap: (){
-                Navigator.push(context,
-                  MaterialPageRoute(builder:(context) => SettingsPage(emailController: userEmail)),
-                );
-              },
-            )
-          ],
-        ),
-      ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ListTile(
-              leading: Container(
-                width: 150,
-                height: 150,
-                child: Image.asset('assets/yoga8.jpeg',
-                fit: BoxFit.cover,
-                ),
-              ),
-              title: Text(
-                _languageMap[_selectedLanguage]!['StartYoga']!,
+              title: Text('Yoga',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.normal
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold
                 ),
+
               ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => YogaPage()),
-                );
-              },
-            )
-          ],
-        )
+
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  tooltip:'Logout',
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return LoginScreen();
+                    })
+                    );
+                  },
+                ),
+              ]
+          ),
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                const DrawerHeader(
+                    decoration: BoxDecoration(
+
+                    ),
+                    child: Image(image: AssetImage('assets/lotus.png'))
+
+                ),
+                ListTile(
+                  leading: Image.asset('assets/home.png',
+                    width:24,
+                    height: 24,
+                  ),
+                  title: Text(_languageMap[_selectedLanguage]!['HomeLabel']!),
+                  onTap: (){
+                    Navigator.push(context,
+                      MaterialPageRoute(builder:(context) => YogaPage()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: Image.asset('assets/settings.png',
+                    width: 24,
+                    height: 24,
+                  ),
+                  title:  Text(_languageMap[_selectedLanguage]!['SettingsLabel']!),
+                  onTap: (){
+                    Navigator.push(context,
+                      MaterialPageRoute(builder:(context) => SettingsPage(emailController: userEmail)),
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ListTile(
+                leading: Container(
+                  width: 150,
+                  height: 150,
+                  child: Image.asset('assets/yoga8.jpeg',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                title: Text(
+                  _languageMap[_selectedLanguage]!['StartYoga']!,
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.normal
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => YogaPosePage()),
+                  );
+                },
+              )
+            ],
+          )
       ),
     );
   }
 }
-

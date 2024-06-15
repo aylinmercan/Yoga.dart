@@ -25,6 +25,7 @@ if (flutterVersionName == null) {
 
 android {
     compileSdkVersion 34
+
     namespace "com.bitirmeprojesi.bitirme"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
@@ -53,6 +54,10 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
         minSdkVersion 21
+    }
+    aaptOptions {
+        noCompress 'tflite'
+        noCompress 'lite'
     }
 
     buildTypes {

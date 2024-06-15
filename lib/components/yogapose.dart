@@ -1,133 +1,111 @@
-import 'package:bitirme/components/squaretile.dart';
-import 'package:bitirme/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:bitirme/components/setting.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:bitirme/lang/tr.dart';
-import 'package:bitirme/lang/en_US.dart';
-import 'package:bitirme/lang/de_germany.dart';
-import 'package:bitirme/components/yoga.dart';
+import 'package:camera/camera.dart';
+import 'package:tflite/tflite.dart';
 
-class YogaPose extends StatefulWidget {
+class YogaPosePage extends StatefulWidget {
   @override
-  _YogaPoseState createState() => _YogaPoseState();
+  _YogaPosePageState createState() => _YogaPosePageState();
 }
-class _YogaPoseState extends State<YogaPose> {
-  late String userEmail;
-  bool _isDarkModeEnabled = false;
-  late String _selectedLanguage;
-  Map<String, Map<String, String>> _languageMap = {
-    'English': enUS,
-    'Türkçe': tur,
-    'Detusch': deGermany,
-  };
-  @override
-  @override
+
+class _YogaPosePageState extends State<YogaPosePage> {
+  late CameraController _controller;
+  bool _isCameraInitialized = false;
+  late List<CameraDescription> _cameras;
+  late List<dynamic> _recognitions;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _loadDarkModeStatus();
-      _loadSelectedLanguage(); // _selectedLanguage'ı başlat
-      _loadUserEmail();
-    });
+    _initializeCamera();
+    _loadModel();
   }
-  Future <void> _loadUserEmail() async{
-    final user = FirebaseAuth.instance.currentUser;
-    setState(() {
-      userEmail = user?.email ?? '';
-    });
-  }
-  _loadSelectedLanguage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _selectedLanguage = prefs.getString('selectedLanguage') ?? 'English';
-    });
-  }
-  _loadDarkModeStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isDarkModeEnabled = prefs.getBool('darkMode') ?? false;
-    });
-  }
+
   @override
-  _toggleDarkMode(bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isDarkModeEnabled = value;
-    });
-    await prefs.setBool('darkMode', value);
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+    Tflite.close();
   }
 
-  Widget build(BuildContext context){
-    return MaterialApp(
-      theme: _isDarkModeEnabled ? ThemeData.dark() : ThemeData.light(),
-      home: Scaffold(
-          appBar: AppBar(
+  void _initializeCamera() async {
+    _cameras = await availableCameras();
+    _controller = CameraController(_cameras[0], ResolutionPreset.medium);
+    await _controller.initialize();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _isCameraInitialized = true;
+    });
+    _controller.startImageStream((CameraImage image) {
+      if (_isCameraInitialized) {
+        _recognizeMovement(image);
+      }
+    });
+  }
 
-              title: Text('Yoga',
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold
-                ),
+  void _loadModel() async {
+    String? res = await Tflite.loadModel(
+      model: 'assets/tflite_modelyoga.tflite',
+      labels: "assets/txtyoga.txt",
+    );
+    print("Model Load Result: $res");
+  }
 
+  void _recognizeMovement(CameraImage image) async {
+    if (_isCameraInitialized) {
+      var recognitions = await Tflite.runModelOnFrame(
+        bytesList: image.planes.map((plane) {
+          return plane.bytes;
+        }).toList(),
+        imageHeight: image.height,
+        imageWidth: image.width,
+        imageMean: 127.5,
+        imageStd: 127.5,
+        rotation: 90,
+        numResults: 2,
+        threshold: 0.1,
+        asynch: true,
+      );
+      setState(() {
+        _recognitions = recognitions!;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Yoga Pose Detection'),
+      ),
+      body: _isCameraInitialized
+          ? Stack(
+        children: [
+          CameraPreview(_controller),
+          Positioned(
+            bottom: 10,
+            left: 10,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              color: Colors.black.withOpacity(0.7),
+              child: Text(
+                'Pose: ${_recognitions.isNotEmpty ? _recognitions[0]['label'] : 'No pose detected'}',
+                style: TextStyle(color: Colors.white),
               ),
-
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  tooltip:'Logout',
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return LoginScreen();
-                    })
-                    );
-                  },
-                ),
-              ]
-          ),
-          drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                const DrawerHeader(
-                    decoration: BoxDecoration(
-
-                    ),
-                    child: Image(image: AssetImage('assets/lotus.png'))
-
-                ),
-                ListTile(
-                  leading: Image.asset('assets/home.png',
-                    width:24,
-                    height: 24,
-                  ),
-                  title: Text(_languageMap[_selectedLanguage]!['HomeLabel']!),
-                  onTap: (){
-                    Navigator.push(context,
-                      MaterialPageRoute(builder:(context) => YogaPage()),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Image.asset('assets/settings.png',
-                    width: 24,
-                    height: 24,
-                  ),
-                  title:  Text(_languageMap[_selectedLanguage]!['SettingsLabel']!),
-                  onTap: (){
-                    Navigator.push(context,
-                      MaterialPageRoute(builder:(context) => SettingsPage(emailController: userEmail)),
-                    );
-                  },
-                )
-              ],
             ),
           ),
+        ],
+      )
+          : Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }
 }
 
+void main() {
+  runApp(MaterialApp(
+    home: YogaPosePage(),
+  ));
+}

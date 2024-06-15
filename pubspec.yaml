@@ -50,6 +50,13 @@ dependencies:
   flutter_localization: ^0.2.0
   get: ^4.6.6
   get_storage: ^2.1.1
+  camera: ^0.10.5+9
+  tflite:
+    path: C:\Users\busramercan\Desktop\bitirme\flutter_tflite
+
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -59,7 +66,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -89,6 +96,10 @@ flutter:
     - assets/yoga9.jpg
     - assets/movenet_thunder.tflite
     - assets/classes.txt
+    - assets/model_unquant.tflite
+    - assets/labels.txt
+    - assets/txtyoga.txt
+    - assets/tflite_modelyoga.tflite
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

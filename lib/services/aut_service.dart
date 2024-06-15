@@ -33,10 +33,10 @@ class AuthService{
     } on FirebaseAuthException catch(e) {
       Fluttertoast.showToast(
           msg: e.message!, toastLength: Toast.LENGTH_LONG);
-  }
+    }
 
   }
- /* signInGoogle() async {
+  /* signInGoogle() async {
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     AuthCredential credential = GoogleAuthProvider.credential(
@@ -98,26 +98,26 @@ class AuthService{
     return RegExp(r'^[0-9]{11}$').hasMatch(phoneNumber);
   }
 
-    Future<void> singIN(
-        {required String email, required String password, required BuildContext context}) async {
-      try {
-        final UserCredential userCredential = await firebaseAuth
-            .signInWithEmailAndPassword(email: email, password: password);
-        if (userCredential.user != null) {
-          Fluttertoast.showToast(
-              msg: "Giriş Başarılı", toastLength: Toast.LENGTH_LONG);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => YogaPage()));
-        };
-      } on FirebaseAuthException catch (e) {
-        Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
-      }
+  Future<void> singIN(
+      {required String email, required String password, required BuildContext context}) async {
+    try {
+      final UserCredential userCredential = await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
+      if (userCredential.user != null) {
+        Fluttertoast.showToast(
+            msg: "Giriş Başarılı", toastLength: Toast.LENGTH_LONG);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => YogaPage()));
+      };
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message!, toastLength: Toast.LENGTH_LONG);
     }
+  }
 
 
   Future<void> _registerUser({required String username, required String email, required String telno, required String password, required String passwordconf }) async {
     await userCollection.doc().set({
-     "username" : username,
+      "username" : username,
       "email" : email,
       "telno" : telno,
       "password" : password,
