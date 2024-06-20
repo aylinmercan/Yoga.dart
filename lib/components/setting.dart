@@ -10,7 +10,16 @@ import 'package:bitirme/components/changeLanguage.dart';
 import 'package:bitirme/lang/tr.dart';
 import 'package:bitirme/lang/en_US.dart';
 import 'package:bitirme/lang/de_germany.dart';
+import 'package:camera/camera.dart';
+import 'package:bitirme/components/yoga.dart';
 
+
+List<CameraDescription> cameras = [];
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras(); // Initialize the cameras list
+}
 class SettingsPage extends StatefulWidget {
   static final String path = "lib/companents/setting.dart";
   final String emailController;
@@ -78,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 tooltip:'Logout',
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return LoginScreen();
+                    return LoginScreen(cameras: cameras,);
                   })
                   );
                 },
@@ -105,7 +114,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 onTap: (){
                   Navigator.push(context,
-                    MaterialPageRoute(builder:(context) => YogaPage()),
+                    MaterialPageRoute(builder: (context) => YogaPage(cameras: cameras)),
                   );
                 },
               ),

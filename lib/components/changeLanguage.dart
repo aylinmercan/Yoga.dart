@@ -104,7 +104,7 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
                       tooltip: 'Logout',
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return LoginScreen();
+                          return LoginScreen(cameras: cameras,);
                         }));
                       },
                     ),

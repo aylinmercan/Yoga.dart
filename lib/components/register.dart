@@ -6,6 +6,7 @@ import 'package:bitirme/components/squaretile.dart';
 import 'package:bitirme/components/button.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '../firebase_options.dart';
+import 'package:camera/camera.dart';
 
 
 
@@ -16,6 +17,9 @@ class RegisterScreen extends StatelessWidget {
   final mailController = TextEditingController();
   final telController = TextEditingController();
   final passConfController = TextEditingController();
+  final List<CameraDescription>? cameras;
+
+  RegisterScreen({Key? key, required this.cameras}) : super(key: key);
 
   @override
   void registerSc () async {
@@ -43,7 +47,7 @@ class RegisterScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(builder: (context) => LoginScreen(cameras: cameras,)),
                       );
                       // Geri dönüş butonu tıklandığında yapılacak işlemler
                     },
@@ -97,7 +101,7 @@ class RegisterScreen extends StatelessWidget {
                 // sign in button
                 mybutton(
 
-                  onTap: () => AuthService().signUp(username: regusername.text, email: mailController.text, telno: telController.text, password: passController.text, passwordconf: passConfController.text),
+                  onTap: () => AuthService(cameras: cameras).signUp(username: regusername.text, email: mailController.text, telno: telController.text, password: passController.text, passwordconf: passConfController.text),
                   //onTap: registerSc,
                   text: 'Sign Up',
 

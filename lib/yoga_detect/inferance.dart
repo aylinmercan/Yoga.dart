@@ -2,11 +2,11 @@ import 'dart:math';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
-import 'package:bitirme/yogadetect/cameracontroller.dart';
-import 'package:bitirme/yogadetect/bndbox.dart';
+import 'package:bitirme/yoga_detect/bndbox.dart';
+import 'package:bitirme/yoga_detect/cameracontroller.dart';
 
 class InferencePage extends StatefulWidget {
-  final List<CameraDescription> cameras;
+  final List<CameraDescription>? cameras;
   final String title;
   final String model;
   final String customModel;
@@ -18,15 +18,22 @@ class InferencePage extends StatefulWidget {
 }
 
 class _InferencePageState extends State<InferencePage> {
-  late List<dynamic> _recognitions;
+  late List<dynamic> _recognitions = []; // Initialize as an empty list
   int _imageHeight = 0;
   int _imageWidth = 0;
 
   @override
   void initState() {
     super.initState();
-    var res = loadModel();
-    print('Model Response: ' + res.toString());
+    if (widget.cameras == null || widget.cameras!.isEmpty) {
+      print('No camera is found in inferance.dart');
+      // Handle the case where no cameras are available
+      // For example, show an error message or navigate back
+      // Alternatively, you can disable the Camera widget in the UI
+    } else {
+      var res = loadModel();
+      print('Model Response: ' + res.toString());
+    }
   }
 
   @override
@@ -45,7 +52,7 @@ class _InferencePageState extends State<InferencePage> {
             setRecognitions: _setRecognitions,
           ),
           BndBox(
-            results: _recognitions == null ? [] : _recognitions,
+            results:  _recognitions,
             previewH: max(_imageHeight, _imageWidth),
             previewW: min(_imageHeight, _imageWidth),
             screenH: screen.height,
@@ -62,7 +69,7 @@ class _InferencePageState extends State<InferencePage> {
       return;
     }
     setState(() {
-      _recognitions = recognitions;
+      _recognitions = recognitions ?? []; // Ensure recognitions is not null
       _imageHeight = imageHeight;
       _imageWidth = imageWidth;
     });

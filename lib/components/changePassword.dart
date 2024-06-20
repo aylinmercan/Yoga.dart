@@ -1,3 +1,4 @@
+import 'package:bitirme/components/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:bitirme/components/button.dart';
 import 'package:bitirme/login.dart';
@@ -120,7 +121,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 tooltip: 'Logout',
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return LoginScreen();
+                    return LoginScreen(cameras: cameras,);
                   }));
                 },
               ),

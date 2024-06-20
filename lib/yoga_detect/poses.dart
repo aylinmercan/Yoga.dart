@@ -1,10 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:bitirme/yogadetect/inferance.dart';
-import 'package:bitirme/yogadetect/yoga_card.dart';
+import 'package:bitirme/yoga_detect/inferance.dart';
+import 'package:bitirme/yoga_detect/yoga_card.dart';
 
 class Poses extends StatelessWidget {
-  final List<CameraDescription> cameras;
+  final List<CameraDescription>? cameras;
   final String title;
   final String model;
   final List<String> asanas;
@@ -49,6 +49,11 @@ class Poses extends StatelessWidget {
   }
 
   void _onSelect(BuildContext context, String customModelName) async {
+    if (cameras == null || cameras!.isEmpty) {
+      // Handle the case where no cameras are available
+      // For example, show an error message or navigate back
+      print('No camera is found in poses.dart');
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
